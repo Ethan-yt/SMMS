@@ -1,0 +1,82 @@
+﻿<UserControl x:Class="SMMS.Views.Log"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:SMMS.Controls"
+             xmlns:local="clr-namespace:SMMS.Views"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d"
+             DataContext="{Binding LogViewModel, Source={StaticResource Locator}}"
+             >
+    <UserControl.Resources>
+        <VisualBrush x:Key="HelpBrush" Stretch="None" AlignmentX="Left">
+            <VisualBrush.Visual>
+                <Label Content=" 请输入搜索关键字，留空表示不限" Foreground="#B2000000"/>
+            </VisualBrush.Visual>
+        </VisualBrush>
+        <Style x:Key="helpStyle" TargetType="TextBox">
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsFocused" Value="false"/>
+                        <Condition Property="Text" Value=""/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="132.389"/>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="搜索：" VerticalContentAlignment="Center" Margin="5" />
+        <TextBox Text="{Binding KeyWord,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource helpStyle}"  Grid.Column="1" Margin="5">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Return" Command="{Binding QueryCommand}"/>
+            </TextBox.InputBindings>
+        </TextBox>
+        <ComboBox ItemsSource="{Binding ComboItemsSource}" SelectedValuePath="ID" DisplayMemberPath="Name" SelectedItem="{Binding SelectedItem}" Grid.Column="2" Margin="5"/>
+        <Button x:Name="button" Command="{Binding QueryCommand}" Content="查询" Grid.Column="4" Margin="5"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"  Visibility="{Binding EditVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" Grid.ColumnSpan="3" Grid.Column="2">
+            <Button Content="删除选中日志" IsEnabled="{Binding EnableDelete}" Command="{Binding DeleteCommand}" Margin="5"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="2"  Grid.ColumnSpan="5" >
+            <DataGrid x:Name="dataGrid" CanUserAddRows="False" Visibility="{Binding GridVisible, Converter={StaticResource BooleanToVisibilityConverter}}"  ItemsSource="{Binding ItemSource}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="Cell" >
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn Header="日志号">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <CheckBox Visibility="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type UserControl}},Path=DataContext.EditVisible, Converter={StaticResource BooleanToVisibilityConverter}}"  IsChecked="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <Label Content="{Binding ID}" />
+                                </StackPanel>
+
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="用户ID" Binding="{Binding UID}"/>
+                    <DataGridTextColumn Header="用户名" Binding="{Binding UNAME}"/>
+                    <DataGridTextColumn Header="操作" Binding="{Binding COMMAND}"/>
+                    <DataGridTextColumn Header="时间" Binding="{Binding TIME}"/>
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+        <CheckBox Content="全选"  Visibility="{Binding EditVisible, Converter={StaticResource BooleanToVisibilityConverter}}"  IsChecked="{Binding IsSelectedAll}" Grid.Row="3" Grid.ColumnSpan="2" Command="{Binding SelectAllCommand}" CommandParameter="{Binding IsSelectedAll}" VerticalAlignment="Bottom" Margin="21,0,0,0" HorizontalAlignment="Left"/>
+        <Label Content="没有符合要求的日志" Visibility="{Binding LabelVisible, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top" Grid.Row="2" Grid.ColumnSpan="5" Margin="25,0,0,0" FontSize="20"/>
+        <DatePicker Grid.Column="3" HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" SelectedDate="{Binding Date}" />
+    </Grid>
+</UserControl>

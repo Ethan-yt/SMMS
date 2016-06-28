@@ -1,0 +1,26 @@
+﻿<mui:ModernWindow x:Class="SMMS.MainWindow"
+  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+  Title="超市管理系统" IsTitleVisible="True" Height="800" Width="1000"
+  ContentSource="/Views/Login.xaml"
+  LogoData="M7.6769858,0 C-2.4892893,0 -2.6562816,17.416414 7.7599839,17.416414 18.176249,17.416414 59.176555,17.582743 59.176555,17.582743 L61.134541,27.1246 C61.134541,27.1246 57.259571,27.1246 57.259571,27.1246 51.509614,27.1246 47.009647,31.437039 48.134639,37.311953 49.259631,43.186866 60.07205,98.499878 60.884544,102.87487 61.697038,107.24987 61.822037,112.74987 69.509479,112.87487 77.196922,112.99987 74.759439,112.87487 74.759439,112.87487 74.759439,112.87487 76.759485,123.41604 77.592812,128.58268 78.42614,133.74932 81.676473,136.33299 86.926461,136.33299 92.176448,136.33299 161.67567,136.49999&#xD;&#xA;172.59227,136.49999 183.50887,136.49999 183.17589,119.16667 172.50927,119.16667 161.84265,119.16667 93.759598,119.375 93.759598,119.375 L92.634603,113.125 C92.634603,113.125 171.75927,113.125 178.25924,113.125 184.75921,113.125 187.5092,111 188.75919,105.375 190.00919,99.75 199.88414,46.375 201.44663,39.1875 203.00913,32 198.19713,27.4375 194.32214,27.3125 190.44715,27.1875 78.509999,27.3125 78.509999,27.3125 78.509999,27.3125 76.45776,15.156932 75.259999,8.0625 74.447499,3.25 72.009999,0.25 66.447499,0.25 60.884999,0.25 7.6769858,0&#xD;&#xA;7.6769858,0 z M115.01,156.125 C115.01,164.47831 108.23831,171.25 99.884999,171.25 C91.531692,171.25 84.759999,164.47831 84.759999,156.125 C84.759999,147.77169 91.531692,141 99.884999,141 C108.23831,141 115.01,147.77169 115.01,156.125 z M172.01,156.125 C172.01,164.47831 165.23831,171.25 156.885,171.25 C148.53169,171.25 141.76,164.47831 141.76,156.125 C141.76,147.77169 148.53169,141 156.885,141 C165.23831,141 172.01,147.77169 172.01,156.125 z"
+  WindowStartupLocation="CenterScreen">
+    <mui:ModernWindow.TitleLinks>
+        <mui:Link DisplayName="设置" Source="/Views/SettingsPage.xaml" />
+        <mui:Link DisplayName="Github" Source="https://github.com/Ethan0w0/SMMS" />
+    </mui:ModernWindow.TitleLinks>
+    <mui:ModernWindow.MenuLinkGroups>
+        <mui:LinkGroup DisplayName="欢迎" GroupKey="login">
+            <mui:LinkGroup.Links>
+                <mui:Link DisplayName="登录" Source="/Views/Login.xaml"/>
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
+        <mui:LinkGroup DisplayName="设置" GroupKey="settings">
+            <mui:LinkGroup.Links>
+                <mui:Link DisplayName="样式" Source="/Views/SettingsPage.xaml"/>
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
+    </mui:ModernWindow.MenuLinkGroups>
+    
+</mui:ModernWindow>

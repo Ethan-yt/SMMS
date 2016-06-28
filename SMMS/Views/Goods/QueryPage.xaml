@@ -1,0 +1,21 @@
+﻿<controls:ModernUserControl x:Class="SMMS.Views.Goods.QueryPage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:SMMS.Views.Goods"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             mc:Ignorable="d" 
+             xmlns:controls="clr-namespace:SMMS.Controls"
+             d:DesignHeight="300" d:DesignWidth="300" NavigatingFrom="ModernUserControl_NavigatingFrom" NavigatedTo="ModernUserControl_NavigatedTo">
+    <Grid Style="{StaticResource ContentRoot}">
+
+        <mui:ModernTab x:Name="Tab" Layout="List" SelectedSource="/Views/Goods/Query/Condition.xaml">
+            <mui:ModernTab.Links>
+                <mui:Link DisplayName="查询条件" Source="/Views/Goods/Query/Condition.xaml" />
+                <mui:Link DisplayName="查询结果" Source="/Views/Goods/Query/Display.xaml" />
+                <mui:Link x:Name="add" DisplayName="增加商品" Source="/Views/Goods/Query/Add.xaml" />
+            </mui:ModernTab.Links>
+        </mui:ModernTab>
+    </Grid>
+</controls:ModernUserControl>

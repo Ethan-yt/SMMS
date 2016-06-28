@@ -1,0 +1,143 @@
+﻿<controls:ModernUserControl x:Class="SMMS.Views.Personnel.Group"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:controls="clr-namespace:SMMS.Controls"
+             xmlns:local="clr-namespace:SMMS.Views.Personnel"
+             xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+             mc:Ignorable="d"
+             DataContext="{Binding PersonnelGroupViewModel, Source={StaticResource Locator}}"
+             NavigatedTo="ModernUserControl_NavigatedTo" NavigatingFrom="ModernUserControl_NavigatingFrom"
+             >
+    <UserControl.Resources>
+        <VisualBrush x:Key="HelpBrush" Stretch="None" AlignmentX="Left">
+            <VisualBrush.Visual>
+                <Label Content=" 请输入搜索关键字，留空表示不限" Foreground="#B2000000"/>
+            </VisualBrush.Visual>
+        </VisualBrush>
+        <Style x:Key="helpStyle" TargetType="TextBox">
+            <Style.Triggers>
+                <MultiTrigger>
+                    <MultiTrigger.Conditions>
+                        <Condition Property="IsFocused" Value="false"/>
+                        <Condition Property="Text" Value=""/>
+                    </MultiTrigger.Conditions>
+                    <Setter Property="Background" Value="{StaticResource HelpBrush}"/>
+                </MultiTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="Auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Content="搜索：" VerticalContentAlignment="Center" Margin="5" />
+        <TextBox Text="{Binding KeyWord,UpdateSourceTrigger=PropertyChanged}" Style="{StaticResource helpStyle}"  Grid.Column="1" Margin="5">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Return" Command="{Binding QueryCommand}"/>
+            </TextBox.InputBindings>
+        </TextBox>
+        <ComboBox ItemsSource="{Binding ComboItemsSource}" SelectedValuePath="ID" DisplayMemberPath="Name" SelectedItem="{Binding SelectedItem}" Grid.Column="2" Margin="5"/>
+        <Button x:Name="button" Command="{Binding QueryCommand}" Content="查询" Grid.Column="3" Margin="5"/>
+        <Button Content="创建新用户组" Visibility="{Binding GridVisible, Converter={StaticResource BooleanToVisibilityConverter}}"  Grid.Row="1" Grid.ColumnSpan="4" HorizontalAlignment="Left" Command="{Binding AddCommand}" Margin="5"/>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Visibility="{Binding GridVisible, Converter={StaticResource BooleanToVisibilityConverter}}" Grid.Row="1" Grid.ColumnSpan="4">
+            <Button Content="撤销所有更改" IsEnabled="{Binding EnableUndo}" Command="{Binding UndoCommand}" Margin="5"/>
+            <Button Content="保存所有更改" IsEnabled="{Binding EnableUndo}" Command="{Binding SaveCommand}" Margin="5"/>
+        </StackPanel>
+        <ScrollViewer Grid.Row="2"  Grid.ColumnSpan="4" >
+            <DataGrid x:Name="dataGrid" CanUserAddRows="False" Visibility="{Binding GridVisible, Converter={StaticResource BooleanToVisibilityConverter}}"  ItemsSource="{Binding ItemSource}" AutoGenerateColumns="False" SelectionMode="Single" SelectionUnit="Cell" >
+                <DataGrid.Columns>
+                    <DataGridTemplateColumn>
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                <Hyperlink Command="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type controls:ModernUserControl}},Path=DataContext.DeleteCommand}" CommandParameter="{Binding ID}">删除</Hyperlink>
+                                </TextBlock>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="ID" Binding="{Binding ID}"/>
+                    <DataGridTextColumn Header="用户组名" Binding="{Binding NAME}"/>
+                    <DataGridTemplateColumn Header="登录">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding LOGIN, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="编辑货物">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding EDITGOODS, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="查询货物">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding QUERYGOODS, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="进货">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding RESTOCKGOODS, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="销售">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding SALEGOODS, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="编辑账号">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding EDITPERSONNEL, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="编辑用户组">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding EDITGROUP, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="编辑日志">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding EDITLOG, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="查询日志">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <CheckBox HorizontalAlignment="Center" VerticalAlignment="Center" IsChecked="{Binding QUERYLOG, UpdateSourceTrigger=PropertyChanged}"/>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </ScrollViewer>
+        <Label Content="没有符合要求的用户组" Visibility="{Binding LabelVisible, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Top" Grid.Row="2" Grid.ColumnSpan="4" Margin="25,0,0,0" FontSize="20"/>
+        <Label Content="您可以双击某项对相应内容进行修改" Visibility="{Binding GridVisible, Converter={StaticResource BooleanToVisibilityConverter}}" VerticalAlignment="Center" Margin="25,25,0,0" Grid.Row="3" Grid.ColumnSpan="4" />
+
+    </Grid>
+</controls:ModernUserControl>
